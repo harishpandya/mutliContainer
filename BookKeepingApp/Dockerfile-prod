@@ -1,0 +1,10 @@
+FROM maven:3.5-jdk-8-alpine AS buildphase
+WORKDIR /usr
+COPY ../ .
+RUN mvn install
+
+FROM openjdk:8-jdk-alpine
+ARG JAR_FILE="/usr/target/BookKeepingApp-0.0.1-SNAPSHOT.jar"
+WORKDIR ./usr
+COPY --from=buildphase ${JAR_FILE} BookKeepingApp.jar
+ENTRYPOINT ["java","-jar","BookKeepingApp.jar"]

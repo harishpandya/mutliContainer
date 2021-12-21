@@ -1,0 +1,10 @@
+FROM maven:3.5-jdk-8-alpine AS buildphase
+WORKDIR /usr
+COPY ../ .
+RUN mvn install
+
+FROM openjdk:8-jdk-alpine
+WORKDIR /usr
+ARG JAR_FILE="/usr/target/BillingApp-0.0.1-SNAPSHOT.jar"
+COPY --from=buildphase ${JAR_FILE} BillingApp.jar
+ENTRYPOINT ["java","-jar","BillingApp.jar"]

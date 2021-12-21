@@ -1,0 +1,32 @@
+version : "3"
+services:
+    customerapp:
+        build:
+            dockerfile: DockerFile-dev
+            context: ./CustomerApp
+        ports:
+            - "4004:8004"
+    inventoryapp:
+        build:
+            dockerfile: DockerFile-dev
+            context: ./InventoryApp
+        ports:
+            - "4003:8003"
+    billapp:
+        build:
+            dockerfile: DockerFile-dev
+            context: ./BillingApp
+        ports:
+            - "4002:8002"
+    bookkeepingapp:
+        build:
+            dockerfile: DockerFile-dev
+            context: ./BookKeepingApp
+        ports:
+            - "4001:8001"
+    nginx:
+        build:
+            dockerfile: dockerfile-dev
+            context: ./nginx
+        ports:
+            - "4000:8000"

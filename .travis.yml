@@ -1,0 +1,24 @@
+sudo: required
+language: generic
+
+services:
+    - docker
+    
+after_success:
+    - docker build -t customerapp -f ./CustomerApp/DockerFile-dev ./CustomerApp
+    - docker build -t inventoryapp -f ./InventoryApp/DockerFile-dev ./InventoryApp
+    - docker build -t billapp -f ./BillingApp/DockerFile-dev ./BillingApp
+    - docker build -t bookkeepingapp -f ./BookKeepingApp/DockerFile-dev ./BookKeepingApp
+    - docker build -t nginxapp -f ./nginx/DockerFile-dev ./nginx
+    
+deploy:
+  provider: elasticbeanstalk
+  region: 'eu-west-2'
+  app: 'MultiContainerApp'
+  env: 'Multicontainerapp-env'
+  bucket_name: 'elasticbeanstalk:eu-west-2:825408628895'
+  bucket_path: 'docker-multi'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
